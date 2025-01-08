@@ -32,11 +32,10 @@ export class AlbumService {
 
   async getSideBarInfos(): Promise<SideBarResponseDto> {
     const date = new Date();
-    const recentSideBarAlbums =
-      await this.albumRepository.getRecentSideBarInfos(date);
-
-    const upComingAlbums =
-      await this.albumRepository.getUpComingSideBarInfos(date);
+    const [recentSideBarAlbums, upComingAlbums] = await Promise.all([
+      this.albumRepository.getRecentSideBarInfos(date),
+      this.albumRepository.getUpComingSideBarInfos(date),
+    ]);
     return new SideBarResponseDto(recentSideBarAlbums, upComingAlbums);
   }
 
