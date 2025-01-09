@@ -47,9 +47,10 @@ export class AlbumService {
   }
 
   async getAlbumDetail(albumId: string): Promise<AlbumDetailResponseDto> {
-    const albumDetail = await this.albumRepository.getAlbumDetailInfos(albumId);
-    const albumSongDetail =
-      await this.albumRepository.getAlbumDetailSongInfos(albumId);
+    const [albumDetail, albumSongDetail] = await Promise.all([
+      this.albumRepository.getAlbumDetailInfos(albumId),
+      this.albumRepository.getAlbumDetailSongInfos(albumId),
+    ]);
     return new AlbumDetailResponseDto(albumDetail, albumSongDetail);
   }
 }
