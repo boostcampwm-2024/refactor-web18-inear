@@ -1,6 +1,6 @@
 import { MainPage } from '@/pages/MainPage';
 import { StreamingPage } from '@/pages/StreamingPage';
-import { Layout } from '@/Layout';
+import { Layout } from '@/app/router/Layout';
 import { AdminPage } from '@/pages/AdminPage';
 import { AdminLoginPage } from '@/pages/AdminLoginPage';
 import { ProtectedRoute } from '@/app/router/ProtectedRoute';

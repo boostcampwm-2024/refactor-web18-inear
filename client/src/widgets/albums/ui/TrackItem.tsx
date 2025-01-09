@@ -1,4 +1,4 @@
-import { SongDetailData } from '@/entities/comment/types';
+import { SongDetailData } from '@/entities/albumDetail/types';
 import { splitTime } from '@/shared/util/timeUtils';
 interface TrackItemProps {
   trackData: SongDetailData;

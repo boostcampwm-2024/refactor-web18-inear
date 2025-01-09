@@ -1,3 +1,4 @@
+import { splitTime } from '@/shared/util/timeUtils';
 interface AlbumArtistProps {
   artist: string;
   songLength: number;
@@ -9,10 +10,6 @@ export function AlbumArtist({
   songLength,
   totalDuration,
 }: AlbumArtistProps) {
-  const hour = Math.floor(Number(totalDuration) / 3600);
-  const minute = Math.floor((Number(totalDuration) % 3600) / 60);
-  const second = Math.floor(Number(totalDuration) % 60);
-
   return (
     <section
       className={
@@ -26,13 +23,7 @@ export function AlbumArtist({
       </p>
       <p className={'flex-shrink-0 flex-grow-0 whitespace-nowrap'}>
         <span className={'mx-2'}>•</span>
-        <span>
-          {(hour > 0 ? String(hour).padStart(2, '0') + '시간 ' : '') +
-            String(minute).padStart(2, '0') +
-            '분 ' +
-            String(second).padStart(2, '0') +
-            '초'}
-        </span>
+        <span>{splitTime(String(totalDuration))}</span>
       </p>
     </section>
   );

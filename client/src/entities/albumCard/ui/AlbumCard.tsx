@@ -1,12 +1,6 @@
-interface AlbumCard {
-  albumId: string;
-  albumName: string;
-  artist: string;
-  albumTags?: string;
-  jacketUrl: string;
-}
+import { AlbumCardData } from '../model/types';
 
-export function AlbumCard({ album }: { album: AlbumCard }) {
+export function AlbumCard({ album }: { album: AlbumCardData }) {
   const tagString = album.albumTags
     ? `#${album.albumTags.split(', ').join(' #')}`
     : '태그 없음';

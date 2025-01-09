@@ -1,4 +1,4 @@
-import { CommentData } from '@/entities/comment/types';
+import { CommentData } from '@/entities/albumDetail/types';
 interface CommentProps {
   comment: CommentData;
   index: number;

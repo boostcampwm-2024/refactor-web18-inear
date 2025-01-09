@@ -1,4 +1,4 @@
-import { AlbumList } from '@/widgets/albums';
+import { AlbumList } from '@/widgets/albumList';
 import { publicAPI } from '@/shared/api/publicAPI';
 import { useEffect, useState } from 'react';
 import { bannerData } from '@/entities/room/types';
