@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { FastAverageColor } from 'fast-average-color';
 import { darken } from 'polished';
 import LogoAlbum from '@/assets/logo-album-cover.webp';
-import { AlbumDetailData, SongDetailData } from '@/entities/comment/types';
+import { AlbumDetailData, SongDetailData } from '@/entities/albumDetail/types';
 
 export function AlbumPage() {
   const { albumId } = useParams<{ albumId: string }>();

@@ -1,6 +1,6 @@
 import { TrackItem } from './TrackItem';
 import './Scrollbar.css';
-import { SongDetailData } from '@/entities/comment/types';
+import { SongDetailData } from '@/entities/albumDetail/types';
 export interface PlaylistComponentProps {
   playlist: SongDetailData[];
 }

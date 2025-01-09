@@ -1,5 +1,5 @@
 import LogoAlbum from '@/assets/logo-album-cover.webp';
-import { AlbumCard } from './AlbumCard';
+import { AlbumCard } from '@/entities/albumCard';
 import { useEffect, useState } from 'react';
 import { EndedAlbumListResponse } from '@/entities/room/types';
 import { publicAPI } from '@/shared/api/publicAPI';

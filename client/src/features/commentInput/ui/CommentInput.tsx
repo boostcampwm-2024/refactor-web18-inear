@@ -2,7 +2,7 @@ import { publicAPI } from '@/shared/api/publicAPI.ts';
 import React, { useCallback, useState } from 'react';
 import { Button } from '@/shared/ui/Button.tsx';
 import { useParams } from 'react-router-dom';
-import { CommentData } from '@/entities/comment/types';
+import { CommentData } from '@/entities/albumDetail/types';
 const MAX_COMMENT_LENGTH = 200;
 
 interface CommentInputProps {
