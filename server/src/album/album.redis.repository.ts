@@ -17,4 +17,19 @@ export class AlbumRedisRepository {
     const currentUsers = await this.redisClient.hGet(roomKey, 'currentUsers');
     return parseInt(currentUsers || '0', 10);
   }
+
+  async getCurrentUsersAll(roomIds: string[]): Promise<number[]> {
+    if (roomIds.length === 1) {
+      const count = await this.getCurrentUsers(roomIds[0]);
+      return [count];
+    }
+
+    const pipeline = this.redisClient.multi();
+    roomIds.forEach((roomId) => {
+      const roomKey = this.roomKey(roomId);
+      pipeline.hGet(roomKey, 'currentUsers');
+    });
+    const results = await pipeline.exec();
+    return results.map((result) => (result ? parseInt(String(result), 10) : 0));
+  }
 }

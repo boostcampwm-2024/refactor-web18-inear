@@ -20,23 +20,22 @@ export class AlbumService {
     const albumBannerInfos =
       await this.albumRepository.getAlbumBannerInfos(date);
 
-    const banners = await Promise.all(
-      albumBannerInfos.map(async (album) => {
-        const currentUserCount =
-          await this.albumRedisRepository.getCurrentUsers(album.albumId);
-        return MainBannerDto.from(album, currentUserCount);
-      }),
+    const albumIds = albumBannerInfos.map((album) => album.albumId);
+    const currentUserCounts =
+      await this.albumRedisRepository.getCurrentUsersAll(albumIds);
+
+    const banners = albumBannerInfos.map((album, index) =>
+      MainBannerDto.from(album, currentUserCounts[index]),
     );
     return new MainBannerResponseDto(banners);
   }
 
   async getSideBarInfos(): Promise<SideBarResponseDto> {
     const date = new Date();
-    const recentSideBarAlbums =
-      await this.albumRepository.getRecentSideBarInfos(date);
-
-    const upComingAlbums =
-      await this.albumRepository.getUpComingSideBarInfos(date);
+    const [recentSideBarAlbums, upComingAlbums] = await Promise.all([
+      this.albumRepository.getRecentSideBarInfos(date),
+      this.albumRepository.getUpComingSideBarInfos(date),
+    ]);
     return new SideBarResponseDto(recentSideBarAlbums, upComingAlbums);
   }
 
