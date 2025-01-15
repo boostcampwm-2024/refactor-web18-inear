@@ -7,6 +7,7 @@ import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { GlobalExceptionFilter } from '@/common/exceptions/global-exception.filter';
 import cookieParser from 'cookie-parser';
+import { RedisIoAdapter } from '@/common/redis-adapter/redis-io.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -25,6 +26,10 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/api-document', app, document);
+
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
 
   app.useGlobalFilters(new GlobalExceptionFilter());
 
