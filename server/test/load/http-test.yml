@@ -1,26 +1,25 @@
 config:
-  target: "http://localhost:3000"
+  target: 'http://localhost:3000'
+  processor: './processor.js'
   phases:
-    - duration: 10
-      arrivalRate: 200  # 초당 20명의 가상 사용자 생성
-  
+    # 초기 유입
+    - duration: 60
+      arrivalRate: 5
+      name: '일반 입장'
+
+    # 급격한 유입
+    - duration: 120
+      arrivalRate: 20
+      name: '피크 트래픽'
+
+    # 안정화 구간
+    - duration: 100
+      arrivalRate: 10
+      name: '안정화'
+
 scenarios:
-  - name: "API Test"
+  - name: 'Stream Test'
     flow:
-      # GET 요청 테스트
       - get:
-          url: "/api/music/ab9eff15-869b-4737-9abe-b544875579d7/playlist.m3u8"
-      
-      # # POST 요청 테스트  
-      # - post:
-      #     url: "/api/posts"
-      #     json:
-      #       title: "Test post"
-      #       content: "This is a test content"
-            
-      # 응답 확인 및 변수 저장
-      # - get:
-      #     url: "/api/posts/{{ postId }}"
-      #     capture:
-      #       - json: "$.id"
-      #         as: "postId"
+          url: '/api/music/{{roomID}}/playlist.m3u8'
+          afterResponse: 'processM3U8'

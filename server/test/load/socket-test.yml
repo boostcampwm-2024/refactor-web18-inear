@@ -12,7 +12,7 @@ config:
       timeout: 10000
   variables:
     # 원하는 roomId 설정
-    roomId: '7b82b46b-d705-48a5-9bc5-918ee1a124a0'
+    roomId: '3dec07ce-2848-408c-81ec-f5bba14484b5'
 scenarios:
   - name: 'Chat room flow'
     engine: socketio-v3
@@ -41,6 +41,6 @@ scenarios:
           channel: 'vote'
           data:
             # 일단 노래 두 개가 있다고 가정하고, 랜덤 값 지정
-            trackNumber: "{{ $randomNumber(1,2) }}"
+            trackNumber: '{{ $randomNumber(1,2) }}'
 
       - think: 30
