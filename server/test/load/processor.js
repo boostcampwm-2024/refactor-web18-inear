@@ -2,10 +2,10 @@ const debug = require('debug')('processor:m3u8');
 const axios = require('axios');
 
 async function processM3U8(requestSpec, response, context, ee) {
-  debug('Processing M3U8 response');
+  debug('Starting M3U8 processing');
   try {
     if (!response || !response.body) {
-      debug('Empty response or body');
+      debug('Response or body is empty');
       return;
     }
 
@@ -23,23 +23,26 @@ async function processM3U8(requestSpec, response, context, ee) {
       }
     });
 
+    debug(`Found ${tsUrls.length} ts URLs`);
+    if (tsUrls.length === 0) {
+      debug('No .ts files found');
+      return;
+    }
+
     for (const url of tsUrls) {
       try {
         const fullUrl = `http://localhost:3000${url}`;
-        console.log(`Requesting: ${fullUrl}`);
+        debug(`Requesting TS file: ${fullUrl}`);
         const response = await axios.get(fullUrl);
-        console.log(
-          `Successfully downloaded: ${url}, status: ${response.status}`,
-        );
+        debug(`TS file downloaded: ${url}, status: ${response.status}`);
       } catch (error) {
-        console.error(`Failed to download ${url}:`, error.message);
+        debug(`Failed to download ${url}: ${error.message}`);
       }
     }
-    return context;
+
+    debug('M3U8 processing completed');
   } catch (error) {
-    debug(`Error processing M3U8: ${error.message}`);
-    console.error(error);
-    return context;
+    debug(`Error in M3U8 processing: ${error.message}`);
   }
 }
 

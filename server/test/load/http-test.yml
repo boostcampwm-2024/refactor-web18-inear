@@ -2,24 +2,22 @@ config:
   target: 'http://localhost:3000'
   processor: './processor.js'
   phases:
-    # 초기 유입
     - duration: 60
-      arrivalRate: 5
-      name: '일반 입장'
+      arrivalRate: 2 # 초당 2명 = 분당 120명
+      name: '일반 부하'
 
-    # 급격한 유입
+    # 피크 시간대 (전체 사용자의 약 70-80%)
     - duration: 120
-      arrivalRate: 20
-      name: '피크 트래픽'
+      arrivalRate: 6 # 초당 6명 = 분당 360명
+      name: '피크 부하'
 
-    # 안정화 구간
+    # 안정화 (전체 사용자의 약 50%)
     - duration: 100
-      arrivalRate: 10
-      name: '안정화'
+      arrivalRate: 4 # 초당 4명 = 분당 240명
 
 scenarios:
   - name: 'Stream Test'
     flow:
       - get:
-          url: '/api/music/{{roomID}}/playlist.m3u8'
+          url: '/api/music/c0fc932e-da70-4388-9ab6-93d69334f458/playlist.m3u8'
           afterResponse: 'processM3U8'
