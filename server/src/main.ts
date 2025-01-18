@@ -41,6 +41,14 @@ async function bootstrap() {
     credentials: true,
   });
   await app.listen(process.env.PORT ?? 3000);
+  process.on('SIGTERM', async () => {
+    await redisIoAdapter.disconnectFromRedis();
+    await app.close();
+  });
+  process.on('SIGINT', async () => {
+    await redisIoAdapter.disconnectFromRedis();
+    await app.close();
+  });
 }
 
 bootstrap();
