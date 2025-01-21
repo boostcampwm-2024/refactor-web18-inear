@@ -7,6 +7,7 @@ import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { GlobalExceptionFilter } from '@/common/exceptions/global-exception.filter';
 import cookieParser from 'cookie-parser';
+import { RedisIoAdapter } from '@/common/redis-adapter/redis-io.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -26,6 +27,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/api-document', app, document);
 
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
+
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   app.useStaticAssets(join(__dirname, '..', 'public'), {
@@ -36,6 +41,14 @@ async function bootstrap() {
     credentials: true,
   });
   await app.listen(process.env.PORT ?? 3000);
+  process.on('SIGTERM', async () => {
+    await redisIoAdapter.disconnectFromRedis();
+    await app.close();
+  });
+  process.on('SIGINT', async () => {
+    await redisIoAdapter.disconnectFromRedis();
+    await app.close();
+  });
 }
 
 bootstrap();
