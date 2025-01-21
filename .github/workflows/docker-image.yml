@@ -2,7 +2,7 @@ name: Docker Image CD
 
 on:
   push:
-    branches: [ 'dev' ]
+    branches: ['dev']
 
 jobs:
   build:
@@ -34,10 +34,10 @@ jobs:
 
       - name: Check file changes
         run: |
-          
+
           CLIENT_FILE_CHANGED=$(git diff --quiet ${{ github.event.before }} HEAD client && echo 'false' || echo 'true')
           SERVER_FILE_CHANGED=$(git diff --quiet ${{ github.event.before }} HEAD server && echo 'false' || echo 'true')
-          
+
           if [ "$CLIENT_FILE_CHANGED" == 'false' ] && [ "$SERVER_FILE_CHANGED" == 'false' ]; then
             echo "CLIENT_FILE_CHANGED=true" > $GITHUB_ENV
             echo "SERVER_FILE_CHANGED=true" >> $GITHUB_ENV
@@ -53,7 +53,7 @@ jobs:
             docker build -f server/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/inear-server:${{ github.sha }} ./
             docker tag ${{ secrets.DOCKER_USERNAME }}/inear-server:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/inear-server:latest
           fi
-          
+
           # 서버 이미지 푸시 (Docker Hub 또는 다른 레지스트리)
       - name: Push server image to Docker Hub
         run: |

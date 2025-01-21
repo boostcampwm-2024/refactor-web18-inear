@@ -1,0 +1,17 @@
+networks:
+  webapp:
+    name: webapp
+
+services:
+  nginx:
+    image: "inear-nginx:latest"
+    container_name: nginx
+    env_file:
+      - ./env/client.env
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    ports:
+      - '80:80'
+    networks:
+      - webapp
+    restart: unless-stopped
