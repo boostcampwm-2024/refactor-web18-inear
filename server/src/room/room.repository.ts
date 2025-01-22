@@ -77,7 +77,7 @@ export class RoomRepository {
       .hSet(roomKey, 'createdAt', room.createdAt.toISOString())
       .hSet(roomKey, 'isActive', ROOM_STATUS.ACTIVE)
       .hSet(roomKey, 'currentUsers', '0')
-      .hSet(roomKey, 'maxCapacity', process.env.MAX_CAPACITY || '100')
+      .hSet(roomKey, 'maxCapacity', process.env.MAX_CAPACITY || '2000')
       .exec();
     return;
   }

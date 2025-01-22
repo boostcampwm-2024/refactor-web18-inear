@@ -1,0 +1,41 @@
+config:
+  target: 'http://localhost'
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      name: '일반 부하'
+
+  engines:
+    socketio-v3:
+      transports: ['websocket']
+      timeout: 20000
+
+  variables:
+    roomId: '9686267c-e1f1-4606-b747-5ae097ac44bf'
+
+  processor: './message-processor.js'
+
+scenarios:
+  - name: 'Blue-Green Deployment Test'
+    engine: socketio-v3
+    flow:
+      - namespace: '/rooms'
+        connect:
+          query: 'roomId={{ roomId }}'
+          headers:
+            x-forwarded-for: '{{ $randomNumber(1000000, 9999999) }}'
+
+      - function: 'generateMessageNumber'
+
+      - namespace: '/rooms'
+        emit:
+          channel: 'message'
+          data:
+            message: 'Message #{{ messageNumber }}'
+            roomId: '{{ roomId }}'
+
+      - namespace: '/rooms'
+        emit:
+          channel: 'vote'
+          data:
+            trackNumber: '{{ $randomNumber(1,2) }}'
