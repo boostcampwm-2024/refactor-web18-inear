@@ -1,0 +1,17 @@
+networks:
+  webapp:
+    external: true
+
+services:
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /:/host:ro,rslave
+    command:
+      - '--path.rootfs=/host'
+    expose:
+      - "9100"
+    networks:
+      - webapp
