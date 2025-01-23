@@ -1,0 +1,21 @@
+networks:
+  webapp:
+    external: true
+
+services:
+  server-green:
+    image: "inear-server:latest"
+    container_name: server-green
+    env_file:
+      - ./env/server.env
+    environment:
+      - NODE_ENV=development
+      - TZ=Asia/Seoul
+    networks:
+      - webapp
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://server-green:3000/api/health || exit 1"]
+      interval: 7s
+      timeout: 10s
+      retries: 5
