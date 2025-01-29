@@ -54,10 +54,13 @@ export class S3CacheService {
   }): Promise<T> {
     const cached = await this.cacheManager.get<T>(cacheKey);
     if (cached) {
+      this.cacheHitCounter.inc();
       return cached;
     }
 
     try {
+      this.cacheMissCounter.inc();
+
       const s3Response = await this.s3
         .getObject({
           Bucket: this.configService.get('S3_BUCKET_NAME'),
@@ -69,6 +72,7 @@ export class S3CacheService {
       await this.cacheManager.set(cacheKey, content, cacheTTL);
       return content;
     } catch (e) {
+      this.cacheErrorCounter.inc();
       const fileType = cacheKey.startsWith('m3u8:') ? 'M3U8' : 'Segment(ts)';
       throw new NotFoundException(`❗ ${fileType} Not Found : ${s3Key}`);
     }

@@ -17,11 +17,10 @@ import { SchedulerService } from './common/scheduler/scheduler.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Comment } from './comment/comment.entity';
 import { CommentModule } from './comment/comment.module';
-import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
-    PrometheusModule.register(),
     CommonModule,
     ScheduleModule.forRoot(),
     ConfigModule.forRoot(),
@@ -29,6 +28,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
     MusicModule,
     AdminModule,
     EmojiModule,
+    MetricsModule,
     AlbumModule,
     SongModule,
     RoomModule,

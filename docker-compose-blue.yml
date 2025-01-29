@@ -19,3 +19,7 @@ services:
       interval: 7s
       timeout: 10s
       retries: 5
+    volumes:
+      - ./server:/app/server
+    expose:
+      - "3000"
