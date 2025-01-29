@@ -7,7 +7,7 @@ scrape_configs:
     static_configs:
       - targets: ['node-exporter:9100']
 
-  - job_name: 'backend'
+  - job_name: 'server'
     metrics_path: '/api/metrics'
     static_configs:
-      - targets: ['server-blue:3000']
+      - targets: ['nginx:80']
