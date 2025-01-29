@@ -17,9 +17,11 @@ import { SchedulerService } from './common/scheduler/scheduler.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Comment } from './comment/comment.entity';
 import { CommentModule } from './comment/comment.module';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
+    PrometheusModule.register(),
     CommonModule,
     ScheduleModule.forRoot(),
     ConfigModule.forRoot(),

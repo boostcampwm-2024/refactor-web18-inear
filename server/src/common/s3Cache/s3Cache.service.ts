@@ -3,10 +3,15 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 import { Cache } from 'cache-manager';
+import { Counter } from 'prom-client';
 
 @Injectable()
 export class S3CacheService {
   private readonly s3: S3;
+  private readonly cacheHitCounter: Counter<string>;
+  private readonly cacheMissCounter: Counter<string>;
+  private readonly cacheErrorCounter: Counter<string>;
+  
   constructor(
     private readonly configService: ConfigService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -18,6 +23,21 @@ export class S3CacheService {
         accessKeyId: this.configService.get('S3_ACCESS_KEY'),
         secretAccessKey: this.configService.get('S3_SECRET_KEY'),
       },
+    });
+
+    this.cacheHitCounter = new Counter({
+      name: 'cache_hits_total',
+      help: 'Total number of cache hits',
+    });
+
+    this.cacheMissCounter = new Counter({
+      name: 'cache_misses_total',
+      help: 'Total number of cache misses',
+    });
+
+    this.cacheErrorCounter = new Counter({
+      name: 'cache_errors_total',
+      help: 'Total number of cache errors',
     });
   }
 
