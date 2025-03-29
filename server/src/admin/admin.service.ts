@@ -100,7 +100,6 @@ export class AdminService {
       Key: key,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: 'public-read',
     };
 
     const result = await this.s3.upload(uploadParams).promise();

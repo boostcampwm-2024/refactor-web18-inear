@@ -17,8 +17,8 @@ export class MusicProcessingSevice {
   private bucketName: string;
   constructor(private configService: ConfigService) {
     this.objectStorage = new AWS.S3({
-      endpoint: new AWS.Endpoint('https://kr.object.ncloudstorage.com'),
-      region: 'kr-standard',
+      endpoint: new AWS.Endpoint(this.configService.get<string>('S3_END_POINT')),
+      region: this.configService.get<string>('S3_REGION'),
       credentials: {
         accessKeyId: this.configService.get<string>('S3_ACCESS_KEY'),
         secretAccessKey: this.configService.get<string>('S3_SECRET_KEY'),
@@ -108,7 +108,6 @@ export class MusicProcessingSevice {
           Bucket: this.bucketName,
           Key: `${s3DirectoryName}/${fileName}`,
           Body: fileStream,
-          ACL: 'public-read',
           ContentType: contentType,
         })
         .promise();
